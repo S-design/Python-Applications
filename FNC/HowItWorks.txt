@@ -1,0 +1,47 @@
+Imports:
+
+import os
+import re
+
+Two modules are imported. The os module is used to interact with the operating system, and the re module is used to perform regular expression operations.
+
+get_cleaned_filenames function:
+
+
+def get_cleaned_filenames(directory):
+    filenames = os.listdir(directory)
+    cleaned_filenames = set([re.sub(r'\d+', '', name) for name in filenames])
+    return cleaned_filenames
+
+This function takes a directory as an argument and returns a set of filenames present in that directory after removing all the numbers from them.
+
+os.listdir(directory) gets the list of all files (and directories) in the specified directory.
+re.sub(r'\d+', '', name) uses a regular expression to remove all numbers (\d+) from the name.
+The result is a set of filenames with numbers removed.
+compare_directories function:
+
+
+def compare_directories(dir1, dir2):
+    filenames_dir1 = get_cleaned_filenames(dir1)
+    filenames_dir2 = get_cleaned_filenames(dir2)
+    common_names = filenames_dir1.intersection(filenames_dir2)
+    unique_in_dir1 = filenames_dir1.difference(filenames_dir2)
+    unique_in_dir2 = filenames_dir2.difference(filenames_dir1)
+    return common_names, unique_in_dir1, unique_in_dir2
+
+This function compares the cleaned filenames in two directories (dir1 and dir2). It returns three sets:
+
+common_names: Filenames (without numbers) that are present in both directories.
+unique_in_dir1: Filenames (without numbers) that are only in dir1.
+unique_in_dir2: Filenames (without numbers) that are only in dir2.
+Main code block:
+
+
+if __name__ == '__main__':
+    ...
+This block is executed when the script is run directly (not imported). It does the following:
+
+Prompt the user for paths of two directories.
+Call compare_directories with the provided paths.
+Print the common filenames and unique filenames from both directories (all without numbers).
+In summary, this code allows a user to compare two directories in terms of their file names. It specifically ignores numbers in filenames when making this comparison. So, if dir1 has a file named image123.jpg and dir2 has image456.jpg, the program would consider these filenames as being common between the two directories, because after removing the numbers, both become image.jpg.
